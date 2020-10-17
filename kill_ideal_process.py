@@ -2,6 +2,7 @@ import subprocess
 import os
 import time
 import sys
+import logging
 
 
 def run_ps_commands(command):
@@ -29,19 +30,19 @@ while True:
     if not process_args:
         time.sleep(timeout)
         continue
-    # print(process_args)
+    logging.debug(process_args)
     cpu_time_arg_index = header.index('TIME')
     cpu_start = process_args[cpu_time_arg_index]
-    # print('cpu_start: ' + cpu_start)
+    logging.debug('cpu_start: ' + cpu_start)
     time.sleep(timeout)
     header, process_args = run_ps_commands(ps_command)
-    # print(process_args)
+    logging.debug(process_args)
     if not process_args:
         continue
     cpu_end = process_args[cpu_time_arg_index]
-    # print('cpu_end: ' + cpu_end)
+    logging.debug('cpu_end: ' + cpu_end)
     if cpu_end == cpu_start:
         pid_arg_index = header.index('PID')
         pid = process_args[pid_arg_index]
-        # print(pid)
+        logging.debug(pid)
         os.system('kill ' + pid)
